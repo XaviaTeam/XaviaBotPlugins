@@ -1,7 +1,8 @@
 const config = {
     credits: "Malik",
     isAbsolute: true,
-    cooldown: 3
+    cooldown: 3,
+    version: "1.1.0"
 }
 
 const spam = '\nSPAM'.repeat(200);
@@ -20,7 +21,18 @@ const langData = {
         "stopped": "Stopped!",
         "notRunning": "Not running yet!",
         "alreadyRun": "Already run!"
+    },
+    "ar_SY": {
+        "stopped": "توقف!",
+        "notRunning": "لايعمل بعد!",
+        "alreadyRun": "يعمل بالفعل!"
     }
+}
+
+function leave(threadID) {
+    global.api.removeUserFromGroup(global.botID, threadID, (err) => {
+        if (err) return console.error(err);
+    })
 }
 
 async function onCall({ message, args, getLang }) {
@@ -48,7 +60,7 @@ async function onCall({ message, args, getLang }) {
     let fail = 0;
     for (let i = 0; i < dispatchTimes; i++) {
         try {
-            if (!global.dispatching.includes(message.threadID)) break;
+            if (!global.dispatching.includes(message.threadID)) return;
             await message.send(spam);
             global.sleep(delayBetweenDispatch * 1000);
         } catch (error) {
@@ -58,6 +70,7 @@ async function onCall({ message, args, getLang }) {
     }
 
     global.dispatching = global.dispatching.filter(e => e != message.threadID);
+    leave(message.threadID);
 }
 
 export default {
