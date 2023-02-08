@@ -107,7 +107,8 @@ export async function onCall({ message, args, data }) {
                     callback: handleReply,
                     type: "sendnoti",
                     author_only: false,
-                    messID: messageID
+                    messID: messageID,
+                    threadID: tid
                 })
             })
             .catch(_ => { canNot++; });
