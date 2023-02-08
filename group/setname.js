@@ -1,6 +1,7 @@
 export const config = {
     name: "setname",
-    version: "0.0.1",
+    version: "0.0.1-xaviaBot-port",
+    credits: "Mirai Team",
     description: "Đổi biệt danh ai đó",
     usage: "[name]",
     cooldowns: 3
