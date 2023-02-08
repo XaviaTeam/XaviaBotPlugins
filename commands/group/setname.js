@@ -1,3 +1,5 @@
+'use strict';
+
 export const config = {
     name: "setname",
     version: "0.0.1-xaviaBot-port",

@@ -1,5 +1,7 @@
+'use strict';
+
 import { join as joinPath } from 'path';
-import { get } from 'request';
+import request from 'request';
 
 export const config = {
     name: "sendnoti",
@@ -18,7 +20,7 @@ const getAtm = (atm, body) => new Promise(async (resolve) => {
     for (let eachAtm of atm) {
         await new Promise(async (resolve) => {
             try {
-                let response = get(eachAtm.url),
+                let response = request.get(eachAtm.url),
                     pathName = response.uri.pathname,
                     ext = pathName.substring(pathName.lastIndexOf(".") + 1),
                     path = joinPath(global.cachePath, `_sntuoff_${eachAtm.filename}.${ext}`);
