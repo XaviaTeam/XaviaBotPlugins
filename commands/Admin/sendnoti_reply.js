@@ -89,7 +89,7 @@ export async function onCall({ message, args, data }) {
     const { threadID, messageID, senderID, messageReply } = message;
 
     if (!args[0]) return message.send("Please input message");
-    let allThread = allTIDs = Array.from(global.data.threads.keys()).filter(item => item != threadID) || [];
+    let allThread = Array.from(global.data.threads.keys()).filter(item => item != threadID) || [];
 
     let can = 0, canNot = 0;
     let text = `Nội dung : ${args.join(" ")}\n\nTừ ${data.user?.info?.name || senderID} \nreply tin nhắn này để báo về admin`;
