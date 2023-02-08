@@ -1,5 +1,3 @@
-'use strict';
-
 import { join as joinPath } from 'path';
 import request from 'request';
 

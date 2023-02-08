@@ -25,7 +25,8 @@ async function handleReply({ message, data, eventData }) {
                     .then(data => data.addReplyEvent({
                         messID: message.messageID,
                         type: "goibot",
-                        author_only: false
+                        author_only: false,
+                        callback: handleReply
                     }))
                     .catch(err => console.error(err));
 
@@ -38,7 +39,8 @@ async function handleReply({ message, data, eventData }) {
                 .send({ body: `${message.body}`, mentions: [{ tag: name, id: message.senderID }] }, eventData.id, eventData.messID)
                 .then(data => data.addReplyEvent({
                     type: "reply",
-                    author_only: false
+                    author_only: false,
+                    callback: handleReply
                 }))
                 .catch(err => console.error(err));
 
