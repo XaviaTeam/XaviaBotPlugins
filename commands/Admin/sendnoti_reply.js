@@ -43,10 +43,10 @@ async function handleReply({ message, eventData, data }) {
 
     switch (eventData.type) {
         case "sendnoti": {
-            let text = `Nội dung : ${body}\n\nTừ ${name}  nhóm ${data.thread.info.threadName || "Unknow"}`;
-            if (message.attachments.length > 0) text = await getAtm(message.attachments, `Nội dung : ${body}\n\nTừ ${name} Trong nhóm ${data.thread.info.threadName || "Unknow"}`);
+            let text = `Nội dung : ${body}\n\nTừ ${name} nhóm ${data.thread.info.name || "Unknow"}`;
+            if (message.attachments.length > 0) text = await getAtm(message.attachments, `Nội dung : ${body}\n\nTừ ${name} Trong nhóm ${data.thread.info.name || "Unknow"}`);
             await message
-                .send(text, eventData.threadID)
+                .send(text, eventData.tid, eventData.messID)
                 .then(data => {
                     atmDir.forEach(async each => global.deleteFile(each).catch(e => console.error(e)))
                     atmDir = [];
@@ -55,7 +55,8 @@ async function handleReply({ message, eventData, data }) {
                         callback: handleReply,
                         type: "reply",
                         author_only: false,
-                        messID: messageID
+                        messID: messageID,
+                        tid: message.threadID
                     })
                 })
                 .catch(e => console.log(e));
@@ -66,7 +67,7 @@ async function handleReply({ message, eventData, data }) {
             let text = `Nội dung : ${body}\n\ntừ ${name} With Love!\nreply tin nhắn này để báo về admin`;
             if (message.attachments.length > 0) text = await getAtm(message.attachments, `${body}\n\nFrom ${name} With Love!\nreply tin nhắn này để báo về admin`);
             await message
-                .send(text, eventData.threadID, eventData.messID)
+                .send(text, eventData.tid, eventData.messID)
                 .then(data => {
                     atmDir.forEach(async each => global.deleteFile(each).catch(e => console.error(e)))
                     atmDir = [];
@@ -75,7 +76,8 @@ async function handleReply({ message, eventData, data }) {
                         callback: handleReply,
                         type: "sendnoti",
                         author_only: false,
-                        messID: messageID
+                        messID: messageID,
+                        tid: message.threadID
                     })
                 })
 
@@ -108,7 +110,7 @@ export async function onCall({ message, args, data }) {
                     type: "sendnoti",
                     author_only: false,
                     messID: messageID,
-                    threadID: tid
+                    tid: message.threadID
                 })
             })
             .catch(_ => { canNot++; });

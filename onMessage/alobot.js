@@ -79,7 +79,7 @@ export async function onCall({ message, data }) {
 
     if (!arr.some(item => body.toLowerCase() == item)) return;
 
-    let nameT = threadInfo.threadName;
+    let nameT = threadInfo.name;
 
     try {
         await message.send(rand, threadID);
