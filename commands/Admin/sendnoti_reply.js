@@ -10,10 +10,10 @@ export const config = {
     cooldowns: 5,
 }
 
-let atmDir = [];
-
 const getAtm = (atm, body) => new Promise(async (resolve) => {
-    let msg = {}, attachment = [];
+    let msg = {};
+    let atmDir = [];
+
     msg.body = body;
     for (let eachAtm of atm) {
         await new Promise(async (resolve) => {
@@ -26,30 +26,43 @@ const getAtm = (atm, body) => new Promise(async (resolve) => {
                 response
                     .pipe(global.writer(path))
                     .on("close", () => {
-                        attachment.push(global.reader(path));
+                        // attachment.push(global.reader(path));
                         atmDir.push(path);
                         resolve();
                     })
             } catch (e) { console.log(e); }
         })
     }
-    msg.attachment = attachment;
-    resolve(msg);
+
+    resolve({
+        msg,
+        atmDir
+    });
 })
 
 async function handleReply({ message, eventData, data }) {
     const { messageID, senderID, body } = message;
     let name = data.user?.info?.name || senderID;
 
+    let atmDir = [];
+
     switch (eventData.type) {
         case "sendnoti": {
             let text = `Nội dung : ${body}\n\nTừ ${name} nhóm ${data.thread.info.name || "Unknow"}`;
-            if (message.attachments.length > 0) text = await getAtm(message.attachments, `Nội dung : ${body}\n\nTừ ${name} Trong nhóm ${data.thread.info.name || "Unknow"}`);
+            if (message.attachments.length > 0) {
+                let returnedObj = await getAtm(message.attachments, `Nội dung : ${body}\n\nTừ ${name} Trong nhóm ${data.thread.info.name || "Unknow"}`);
+
+                text = returnedObj.msg;
+                atmDir = returnedObj.atmDir;
+
+                if (atmDir.length > 0) {
+                    text.attachment = atmDir.map(item => global.reader(item));
+                }
+            }
             await message
                 .send(text, eventData.tid, eventData.messID)
                 .then(data => {
                     atmDir.forEach(async each => global.deleteFile(each).catch(e => console.error(e)))
-                    atmDir = [];
 
                     data.addReplyEvent({
                         callback: handleReply,
@@ -65,12 +78,20 @@ async function handleReply({ message, eventData, data }) {
         }
         case "reply": {
             let text = `Nội dung : ${body}\n\ntừ ${name} With Love!\nreply tin nhắn này để báo về admin`;
-            if (message.attachments.length > 0) text = await getAtm(message.attachments, `${body}\n\nFrom ${name} With Love!\nreply tin nhắn này để báo về admin`);
+            if (message.attachments.length > 0) {
+                const returnedObj = await getAtm(message.attachments, `${body}\n\nFrom ${name} With Love!\nreply tin nhắn này để báo về admin`);
+
+                text = returnedObj.msg;
+                atmDir = returnedObj.atmDir;
+
+                if (atmDir.length > 0) {
+                    text.attachment = atmDir.map(item => global.reader(item));
+                }
+            }
             await message
                 .send(text, eventData.tid, eventData.messID)
                 .then(data => {
                     atmDir.forEach(async each => global.deleteFile(each).catch(e => console.error(e)))
-                    atmDir = [];
 
                     data.addReplyEvent({
                         callback: handleReply,
@@ -93,17 +114,26 @@ export async function onCall({ message, args, data }) {
     if (!args[0]) return message.send("Please input message");
     let allThread = Array.from(global.data.threads.keys()).filter(item => item != threadID) || [];
 
+    let atmDir = [];
     let can = 0, canNot = 0;
+
     let text = `Nội dung : ${args.join(" ")}\n\nTừ ${data.user?.info?.name || senderID} \nreply tin nhắn này để báo về admin`;
-    if (message.type == "message_reply") text = await getAtm(messageReply.attachments, `Nội dung : ${args.join(" ")}\n\nTừ ${data.user?.info?.name || senderID}\nreply tin nhắn này để báo về admin`);
+    if (message.type == "message_reply") {
+        const returnedObj = await getAtm(messageReply.attachments, `Nội dung : ${args.join(" ")}\n\nTừ ${data.user?.info?.name || senderID}\nreply tin nhắn này để báo về admin`);
+
+        text = returnedObj.msg;
+        atmDir = returnedObj.atmDir;
+    }
 
     for (const tid of allThread) {
+        if (atmDir.length > 0) {
+            text.attachment = atmDir.map(item => global.reader(item));
+        }
+
         await message
             .send(text, tid)
             .then(data => {
                 can++;
-                atmDir.forEach(async each => global.deleteFile(each).catch(e => console.error(e)))
-                atmDir = [];
 
                 data.addReplyEvent({
                     callback: handleReply,
@@ -117,6 +147,9 @@ export async function onCall({ message, args, data }) {
 
         global.sleep(300);
     }
+
+
+    atmDir.forEach(async each => global.deleteFile(each).catch(e => console.error(e)))
 
     message.send(`Đã gửi thông báo đến ${can} nhóm, không thể gửi đến ${canNot} nhóm`);
 }
