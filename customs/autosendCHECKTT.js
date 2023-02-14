@@ -17,7 +17,7 @@ export default function autoSend() {
 
             let msg = "📊 Thống kê TOP 10 ngày hôm qua:\n";
 
-            for (let i = 0; i < _DAYDATA.length; i++) {
+            for (let i = 0; i < _DAYDATA.slice(0, 10).length; i++) {
                 let username = (await global.controllers.Users.getName(_DAYDATA[i].id)) || "Người dùng Facebook";
                 msg += `\n${i + 1}. ${username} - ${_DAYDATA[i].n}`;
             }
