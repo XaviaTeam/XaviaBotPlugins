@@ -15,6 +15,15 @@ const config = {
 const checkttPATH = join(global.assetsPath, "checktt_x213");
 let isReady = false;
 
+function isJSON(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 async function onLoad({ }) {
     try {
         ensureFolderExists(checkttPATH);
@@ -22,9 +31,14 @@ async function onLoad({ }) {
             global.checktt_cache = new Map();
 
         readdirSync(checkttPATH).forEach(file => {
-            let fileDATA = JSON.parse(readFileSync(join(checkttPATH, file)));
+            let fileData = readFileSync(join(checkttPATH, file));
+            let parsedData = isJSON(fileData) ? JSON.parse(fileData) : {
+                day: [],
+                week: [],
+                all: []
+            };
 
-            global.checktt_cache.set(file.replace(".json", ""), fileDATA);
+            global.checktt_cache.set(file.replace(".json", ""), parsedData);
         })
 
         clearInterval(global.checktt_interval);
