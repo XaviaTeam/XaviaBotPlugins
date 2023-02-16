@@ -7,7 +7,7 @@ export const config = {
     hasPermssion: 0,
     credits: "MewMew mod By hungdz30cm",
     description: "Generate a Mark Zuckerberg text image",
-    usages: "[text]",
+    usage: "[text]",
     cooldowns: 10,
 };
 
