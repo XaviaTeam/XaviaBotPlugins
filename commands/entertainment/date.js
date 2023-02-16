@@ -19,7 +19,7 @@ export async function makeImage({ one, two }) {
     const template = await loadImage(datePath);
 
     let avatarPathOne = join(global.cachePath, `avt_date_${one}.png`);
-    let avatarPathTwo = join(global.cachePath, `avt_datex_${two}.png`);
+    let avatarPathTwo = join(global.cachePath, `avt_date_${two}.png`);
 
     await global.downloadFile(avatarPathOne, global.getAvatarURL(one));
     await global.downloadFile(avatarPathTwo, global.getAvatarURL(two));
