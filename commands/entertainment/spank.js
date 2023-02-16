@@ -10,7 +10,7 @@ export const config = {
 export async function onCall({ message }) {
     const { reply, mentions, react } = message;
 
-    if (!mentions || mentions.length == 0) return reply("Please tag someone");
+    if (!mentions || !Object.keys(mentions)[0]) return reply("Please tag someone");
 
     return GET('https://api.satou-chan.xyz/api/endpoint/spank')
         .then(async res => {
