@@ -7,3 +7,4 @@
 - Nghia (2 plugins)
 - MewMew (1 plugin)
 - Mr.Aik3ro (2 plugins)
+- kudos (1 plugin)
