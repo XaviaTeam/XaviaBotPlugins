@@ -4,11 +4,10 @@ import { join } from "path";
 export const config = {
     name: "mark",
     version: "0.0.1-xaviabot-port",
-    hasPermssion: 0,
     credits: "MewMew mod By hungdz30cm",
     description: "Generate a Mark Zuckerberg text image",
     usage: "[text]",
-    cooldowns: 10,
+    cooldown: 10,
 };
 
 export function wrapText(ctx, text, maxWidth) {
