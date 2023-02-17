@@ -3,7 +3,7 @@ import { join } from "path";
 
 export const config = {
     name: "billboard",
-    version: "0.0.1-xaviabot-port",
+    version: "0.0.2-xaviabot-port",
     description: "",
     usage: "[text]",
     cooldown: 10
@@ -72,7 +72,7 @@ export async function onCall({ message, args }) {
             fontSize--;
             ctx.font = `400 ${fontSize}px Arial, sans-serif`;
         }
-        const lines = await wrapText(ctx, text, 1160);
+        const lines = await wrapText(ctx, text, 180);
         ctx.fillText(lines.join('\n'), 352, 392);
         ctx.beginPath();
         const imageBuffer = canvas.toBuffer();

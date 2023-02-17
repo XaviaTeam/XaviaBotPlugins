@@ -3,7 +3,7 @@ import { join } from "path";
 
 export const config = {
     name: "google",
-    version: "0.0.1-xaviabot-port",
+    version: "0.0.2-xaviabot-port",
     description: "Generate google text image",
     usage: "[text]",
     cooldown: 10,
@@ -62,7 +62,7 @@ export async function onCall({ message, args }) {
             fontSize--;
             ctx.font = `400 ${fontSize}px Arial, sans-serif`;
         }
-        const lines = await wrapText(ctx, text, 470);
+        const lines = await wrapText(ctx, text, 780);
         ctx.fillText(lines.join('\n'), 580, 646);//comment
         ctx.beginPath();
 

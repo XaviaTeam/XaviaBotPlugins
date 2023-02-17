@@ -3,7 +3,7 @@ import { join } from "path";
 
 export const config = {
     name: "fbpost",
-    version: "0.0.1-xaviabot-port",
+    version: "0.0.2-xaviabot-port",
     description: "Facebook Post",
     usage: "[text]",
     cooldown: 10
@@ -73,7 +73,7 @@ export async function onCall({ message, args }) {
             fontSize--;
             ctx.font = `700 ${fontSize}px Arial`;
         }
-        const lines = await wrapText(ctx, text, 650);
+        const lines = await wrapText(ctx, text, 1500);
         ctx.fillText(lines.join('\n'), 20, 250);
         ctx.beginPath();
         const imageBuffer = canvas.toBuffer();
