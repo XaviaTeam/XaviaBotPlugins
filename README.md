@@ -29,5 +29,5 @@ Plugins for XaviaBot by everyone!
 - kudos (1 plugin)
 - Zeska (1 plugin)
 - Choru tiktokers (1 plugin)
-- Clarence DK (1 plugin)
-- Joshua Sy (2 plugins)
+- Clarence DK (2 plugins)
+- Joshua Sy (3 plugins)
