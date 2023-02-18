@@ -13,7 +13,7 @@ export const config = {
     cooldown: 20
 }
 
-export async function run({ message }) {
+export async function onCall({ message }) {
     let mention = Object.keys(event.mentions)[0];
     if (!mention) return message.reply("Tag someone to flirt with them! ( ͡° ͜ʖ ͡°)")
 
