@@ -82,7 +82,7 @@ async function onCall({ message, args, data }) {
 
             let msg = "📊 Thống Kê Tổng Hợp:\n";
 
-            for (let i = 0; i < allData.slice(0, 10).length; i++) {
+            for (let i = 0; i < allData.length; i++) {
                 let name = (await global.controllers.Users.getName(allData[i].id)) || "Người dùng Facebook";
                 msg += `${i + 1}. ${name} - ${allData[i].n}\n`;
             }
