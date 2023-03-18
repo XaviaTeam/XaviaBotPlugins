@@ -12,7 +12,7 @@ export async function onCall({ message }) {
 
     if (!mentions || !Object.keys(mentions)[0]) return reply("Please tag someone");
 
-    return GET('https://api.satou-chan.xyz/api/endpoint/punch')
+    return GET('https://apiservice1.kisara.app/satou/api/endpoint/punch')
         .then(async res => {
             let mention = Object.keys(mentions)[0],
                 tag = mentions[mention].replace("@", "");
