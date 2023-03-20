@@ -12,7 +12,7 @@ export const config = {
 
 const marryPath = join(global.assetsPath, "marrywi.png");
 export async function onLoad() {
-    global.downloadFile(marryPath, "https://i.imgur.com/4ATHG80.png");
+    global.downloadFile(marryPath, "https://i.ibb.co/VDrz7Q9/336377253-520155543604186-3362317639442779902-n.png");
 }
 
 export async function makeImage({ one, two }) {
