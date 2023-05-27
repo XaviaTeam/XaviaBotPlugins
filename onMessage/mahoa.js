@@ -5,7 +5,7 @@ export const config = {
     description: "nôm na thì encode + nội dung thì nó chuyển text => dãy gồm i còn decode thì ngược lại. Dùng để bảo mật thông tin"
 };
 function onCall({ message, getLang, data }) {
-      let arg = message.body.split(" ")
+      let args = message.body.split(" ")
 
   if (args[0] == "encode"||args[0] == (data?.thread?.data?.prefix || global.config.PREFIX)+"encode") {
           
