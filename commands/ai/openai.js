@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
 
 const config = {
-    name: "gpt",
+    name: "openai",
     version: "0.0.1-beta",
     aliases: ["ai"],
     description: "Chat with GPT or create an image with DALL-E.",
