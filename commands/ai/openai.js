@@ -11,7 +11,7 @@ const config = {
 };
 
 const openaiApi = new OpenAI({
-	apiKey: process.env.OPENAI_KEY,
+    apiKey: process.env.OPENAI_KEY,
 });
 
 async function onCall({ message, args }) {
@@ -39,15 +39,15 @@ async function onCall({ message, args }) {
     if (isCreate) {
         const imagePrompt = promptText.replace("create ", "");
 
-        openaiApi
-            .createImage({
+        openaiApi.images
+            .generate({
                 prompt: imagePrompt,
                 size: "512x512",
                 response_format: "url",
             })
             .then(async (res) => {
                 await message.reply({
-                    attachment: await global.getStream(res.data.data[0].url),
+                    attachment: await global.getStream(res.data[0].url),
                 });
             })
             .catch((e) => {
@@ -55,8 +55,8 @@ async function onCall({ message, args }) {
                 message.reply("An error occurred.");
             });
     } else {
-        openaiApi
-            .createChatCompletion({
+        openaiApi.completions
+            .create({
                 model: "gpt-3.5-turbo",
                 max_tokens: 2000,
                 n: 1,
@@ -72,7 +72,7 @@ async function onCall({ message, args }) {
                     const parsedContent = (
                         await global.GET(
                             `https://xva-api.up.railway.app/api/extractgpt?content=${encodeURIComponent(
-                                res.data.choices[0].message.content
+                                res.choices[0].text
                             )}&maxCharacterPerLine=6000`
                         )
                     ).data;
