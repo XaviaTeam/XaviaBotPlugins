@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+import { OpenAI } from "openai";
 
 const config = {
     name: "openai",
@@ -10,11 +10,9 @@ const config = {
     credits: "RFS-ADRENO",
 };
 
-const openaiConfig = new Configuration({
-    apiKey: process.env.OPENAI_KEY,
+const openaiApi = new OpenAI({
+	apiKey: process.env.OPENAI_KEY,
 });
-
-const openaiApi = new OpenAIApi(openaiConfig);
 
 async function onCall({ message, args }) {
     if (!process.env.OPENAI_KEY) {
