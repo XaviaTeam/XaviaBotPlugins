@@ -72,7 +72,7 @@ async function onCall({ message, args }) {
                     const parsedContent = (
                         await global.GET(
                             `https://xva-api.up.railway.app/api/extractgpt?content=${encodeURIComponent(
-                                res.choices[0].text
+                                res.choices[0].message.content
                             )}&maxCharacterPerLine=6000`
                         )
                     ).data;
