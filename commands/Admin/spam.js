@@ -13,9 +13,9 @@ function onLoad() {
 
 const langData = {
     "vi_VN": {
-        "stopped": "Stopped!",
-        "notRunning": "Not running yet!",
-        "alreadyRun": "Already run!"
+        "stopped": "Đã dừng!",
+        "notRunning": "Chưa chạy!",
+        "alreadyRun": "Đã chạy!"
     },
     "en_US": {
         "stopped": "Stopped!",
