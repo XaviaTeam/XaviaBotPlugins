@@ -9,8 +9,8 @@ const config = {
     usage: "",
     cooldown: 3,
     permissions: [0, 1, 2],
-    credits: "Nghia/DungUwU"
-}
+    credits: "Nghia/DungUwU",
+};
 
 const checkttPATH = join(global.assetsPath, "checktt_x213");
 let isReady = false;
@@ -24,22 +24,23 @@ function isJSON(str) {
     return true;
 }
 
-async function onLoad({ }) {
+async function onLoad({}) {
     try {
         ensureFolderExists(checkttPATH);
-        if (!global.hasOwnProperty("checktt_cache"))
-            global.checktt_cache = new Map();
+        if (!global.hasOwnProperty("checktt_cache")) global.checktt_cache = new Map();
 
-        readdirSync(checkttPATH).forEach(file => {
+        readdirSync(checkttPATH).forEach((file) => {
             let fileData = readFileSync(join(checkttPATH, file));
-            let parsedData = isJSON(fileData) ? JSON.parse(fileData) : {
-                day: [],
-                week: [],
-                all: []
-            };
+            let parsedData = isJSON(fileData)
+                ? JSON.parse(fileData)
+                : {
+                      day: [],
+                      week: [],
+                      all: [],
+                  };
 
             global.checktt_cache.set(file.replace(".json", ""), parsedData);
-        })
+        });
 
         clearInterval(global.checktt_interval);
 
@@ -64,18 +65,20 @@ async function onCall({ message, args, data }) {
         let threadDATA = global.checktt_cache.get(threadID);
         if (!threadDATA) return message.reply("Không có dữ liệu về nhóm này!");
 
-        threadDATA.day = threadDATA.day.filter(item => participantIDs.some(e => e == item.id));
-        threadDATA.week = threadDATA.week.filter(item => participantIDs.some(e => e == item.id));
-        threadDATA.all = threadDATA.all.filter(item => participantIDs.some(e => e == item.id));
+        threadDATA.day = threadDATA.day.filter((item) => participantIDs.some((e) => e == item.id));
+        threadDATA.week = threadDATA.week.filter((item) =>
+            participantIDs.some((e) => e == item.id)
+        );
+        threadDATA.all = threadDATA.all.filter((item) => participantIDs.some((e) => e == item.id));
 
         if (args[0] == "all") {
             let allData = threadDATA.all.sort((a, b) => b.n - a.n);
 
-            participantIDs.forEach(id => {
-                if (!allData.some(e => e.id == id)) {
+            participantIDs.forEach((id) => {
+                if (!allData.some((e) => e.id == id)) {
                     allData.push({
                         id: id,
-                        n: 0
+                        n: 0,
                     });
                 }
             });
@@ -83,7 +86,9 @@ async function onCall({ message, args, data }) {
             let msg = "📊 Thống Kê Tổng Hợp:\n";
 
             for (let i = 0; i < allData.length; i++) {
-                let name = (await global.controllers.Users.getName(allData[i].id)) || "Người dùng Facebook";
+                let name =
+                    (await global.controllers.Users.getName(allData[i].id)) ||
+                    "Người dùng Facebook";
                 msg += `${i + 1}. ${name} - ${allData[i].n}\n`;
             }
 
@@ -91,13 +96,13 @@ async function onCall({ message, args, data }) {
         } else {
             const targetID = Object.keys(mentions)[0] || messageReply?.senderID || senderID;
 
-            let findDay = threadDATA.day.find(item => item.id == targetID);
-            let findWeek = threadDATA.week.find(item => item.id == targetID);
-            let findTotal = threadDATA.all.find(item => item.id == targetID);
+            let findDay = threadDATA.day.find((item) => item.id == targetID);
+            let findWeek = threadDATA.week.find((item) => item.id == targetID);
+            let findTotal = threadDATA.all.find((item) => item.id == targetID);
 
-            let name = await global.controllers.Users.getName(targetID) || "Người dùng Facebook";
+            let name = (await global.controllers.Users.getName(targetID)) || "Người dùng Facebook";
 
-            let totalRank = threadDATA.all.findIndex(item => item.id == targetID) + 1;
+            let totalRank = threadDATA.all.findIndex((item) => item.id == targetID) + 1;
 
             let msg =
                 `👥 Tên: ${name}\n` +
@@ -118,14 +123,14 @@ async function onCall({ message, args, data }) {
 export default {
     config,
     onLoad,
-    onCall
-}
+    onCall,
+};
 
 function getRole(targetID, data) {
     let role = "Thành Viên";
 
-    if (data != null && data.adminIDs.some(e => e.id == targetID)) role = "Admin Nhóm";
-    if (global.config.MODERATORS.some(e => e == targetID)) role = "Admin Bot";
+    if (data != null && data.adminIDs.some((e) => (e.id ?? e) == targetID)) role = "Admin Nhóm";
+    if (global.config.MODERATORS.some((e) => e == targetID)) role = "Admin Bot";
 
     return role;
 }
